@@ -47,9 +47,10 @@ function mapStateToProps( state ) {
 }
 export default connect( mapStateToProps )( App );
 ```
+___
 </details>
 
-Now that we're all wired up, we just need to make sure everything is working! Do this by `console.log`ing `this.props.test` at the top of `App`'s `render` method. You should see an output of `true`.
+Now that we're all wired up, we just need to make sure everything is working! Do this by `console.log`ing `this.props.test` at the top of `App`'s `render` method. You should see an output of `true`. Whew, that was a lot of setup! Luckily we only have to do most of this once per application.
 <details>
 <summary>**Code Solution**</summary>
 
@@ -112,6 +113,19 @@ export default connect( mapStateToProps )( App );
 ```
 
 </details>
+
+### Step 2
+**Summary**
+Now that our application is talking to Redux we need to set up Redux to actually do the things we want it to do. We'll start by creating an initial state, creating action types, creating action creators, and implementing increment/decrement logic.
+
+**Detailed Instructions**
+Start in `src/ducks/counter.js`. Right now our reducer function `counter` doesn't do much, and it certainly isn't a counter. Our first step is to create an initial state, the way we want our data to take when the application first loads. Create a variable named `initialState` and set it equal to an object with one property `currentValue`, which is set to 0.
+
+Next, update `counter` to take two parameters: `state`, which defaults to `initialState`, and `action`. Then return `state` instead of the `{ test: true }` object from the previous step. Now when our application initializes Redux will have our initial value of `currentValue`.
+
+We now have a real state, but no way to do anything with it. To be able to access that data we first need to create some action types. Action types describe to our reducer (`counter`) what has occurred when Redux receives an action. We'll start with two action types, each stored in its own variable. Create a variable named `INCREMENT` and set it equal to the string `"INCREMENT"`,  and a variable named `DECREMENT` set equal to the string `"DECREMENT"`. We use all capital names here to indicate that these values are constants that will never be altered by the application.
+
+Following action types comes the action creators. In Redux, actions are plain objects containing a type (describing what happened) and any data that might be necessary to the action. Our first action creator will be a function named `increment` that takes in a parameter of `amount`. The function then returns an object with two properties: `amount` - set equal to the `amount` parameter, and `type` set equal to the `INCREMENT` action type.  
 
 ## Contributions
 
