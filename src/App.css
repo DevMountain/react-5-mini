@@ -1,0 +1,56 @@
+.app {
+	display: flex;
+	height: 100vh;
+}
+
+.counter, .state {
+	align-items: center;
+	display: flex;
+	flex: 1;
+	height: 100vh;
+	justify-content: center;
+}
+
+.counter {
+	flex-direction: column;
+	font-family: "Helvetica Neue", Helvetica, sans-serif;
+	font-weight: 100;
+}
+
+.state {
+	background-color: #d5d3d5;
+	overflow: scroll;
+}
+
+.state pre {
+	font-family: Monaco, Courier, monospace;
+}
+
+.counter__current-value {
+	font-size: 42px;
+	font-weight: 100;
+}
+
+.counter__button-wrapper {
+	text-align: center;
+}
+
+.counter__button {
+	background-color: black;
+	border: 1px solid black;
+	border-radius: 0;
+	color: #ffffff;
+	font-family: "Helvetica Neue", Helvetica, sans-serif;
+	font-size: 16px;
+	font-weight: 200;
+	margin: 0 5px 5px 0;
+	padding: 10px;
+}
+
+.counter__button:disabled {
+	color: #9da0a4;
+}
+
+.counter__button:last-child {
+	margin-right: 0;
+}
