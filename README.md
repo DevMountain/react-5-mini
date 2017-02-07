@@ -2,7 +2,7 @@
 <img src="https://raw.githubusercontent.com/DevMountain/redux-counter/master/SolutionPicture.png" />
 
 ### Setup
-To begin, fork and clone this repository. Once it has finished downloading `cd` into the project root and run `npm i` or `yarn` to fetch the project dependencies. After they are fetched run `npm start` and a browser window will open at `http://localhost:3000` displaying a (non-functioning) counter app.
+To begin, fork and clone this repository. Once it has finished downloading `cd` into the project root and run `npm i` to fetch the project dependencies. After they are fetched run `npm start` and a browser window will open at `http://localhost:3000` displaying a (non-functioning) counter app.
 
 ### The plan
 Our goal with this mini project is to create a small counter application using React and Redux. Beyond the standard increment and decrement functionality, we also want to implement an undo/redo stack similar to what you see in most text editors.
@@ -125,7 +125,14 @@ Next, update `counter` to take two parameters: `state`, which defaults to `initi
 
 We now have a real state, but no way to do anything with it. To be able to access that data we first need to create some action types. Action types describe to our reducer (`counter`) what has occurred when Redux receives an action. We'll start with two action types, each stored in its own variable. Create a variable named `INCREMENT` and set it equal to the string `"INCREMENT"`,  and a variable named `DECREMENT` set equal to the string `"DECREMENT"`. We use all capital names here to indicate that these values are constants that will never be altered by the application.
 
-Following action types comes the action creators. In Redux, actions are plain objects containing a type (describing what happened) and any data that might be necessary to the action. Our first action creator will be a function named `increment` that takes in a parameter of `amount`. The function then returns an object with two properties: `amount` - set equal to the `amount` parameter, and `type` set equal to the `INCREMENT` action type.  
+Following action types comes the action creators. In Redux, actions are plain objects containing a type (describing what happened) and any data that might be necessary to the action. Our first action creator will be a function named `increment` that takes in a parameter of `amount`. The function then returns an object with two properties: `amount` - set equal to the `amount` parameter, and `type` set equal to the `INCREMENT` action type.  Create a `decrement` function that mimics `increment`, the only difference being that `type` should now be equal to `DECREMENT`. Export both of these functions.
+
+The last change we'll be making in our `counter.js` file will be updating the reducer to handle these actions. Our `counter` reducer takes two parameters, `state` and `action`. `state` is the value of our application state and `action` will be an object from one of our action creators. It is a core concept of Redux and state management that state is never mutated, meaning you should never say `state.currentValue = newValue` or `state.values.push( newValue )`. This means that each time that `counter` is called we need to return a **new** state object based on the action and values from the current state **without** changing the current state.
+
+With that in mind, let's get started. First we need to determine what happened by looking at the action's type, a `switch` statement is perfect for this. If the action type is `INCREMENT` we will return a new a state object where the `currentValue` property is equal to the current state's `currentValue` property plus `action.amount`. If the action type is `DECREMENT` we will return a new state object where `currentValue` is equal to the current state's `currentValue` property minus `action.amount`.
+
+All that's left in this step is to wire up `App` to dispatch these actions. Inside of `src/App.js` import your `increment` and `decrement` action creator functions. We need these passed as props to `App`, so we are going to create another function underneath `mapStateToProps`. Create the function `mapDispatchToProps` taking in a parameter `dispatch`. `dispatch` is a function provided by Redux that allows us to send an action to the reducer. `mapDispatchToProps` should return an object with two properties: `increment` and `decrement`. Both of these properties should be functions that take in an `amount` parameter and call `dispatch` passing in the return value from an action creator. For example: `dispatch( increment( amount ) );`. Pass `mapDispatchToProps` as a second argument to the existing `connect` function. What we have done here is placed functions on our component's props to allow for easily dispatching action to Redux. If you `console.log( this.props );` you should now see the `currentValue` at 0, as well as your `increment` and `decrement` functions.
+
 
 ## Contributions
 
