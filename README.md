@@ -118,8 +118,11 @@ export default connect( mapStateToProps )( App );
 **Summary**
 Now that our application is talking to Redux we need to set up Redux to actually do the things we want it to do. We'll start by creating an initial state, creating action types, creating action creators, and implementing increment/decrement logic.
 
+**Instructions**
+Create an `initialState` object with a property `currentValue` set equal to 0, create `INCREMENT` and `DECREMENT` action types, write corresponding action creator functions `increment` and `decrement`, which take an `amount` parameter, and update the reducer to process these actions into state changes.
+
 **Detailed Instructions**
-Start in `src/ducks/counter.js`. Right now our reducer function `counter` doesn't do much, and it certainly isn't a counter. Our first step is to create an initial state, the way we want our data to take when the application first loads. Create a variable named `initialState` and set it equal to an object with one property `currentValue`, which is set to 0.
+Start in `src/ducks/counter.js`. Right now our reducer function `counter` doesn't do much, and it certainly isn't a counter. Our first step is to create an initial state, the way we want our data to look when the application first loads. Create a variable named `initialState` and set it equal to an object with one property `currentValue`, which is set to 0.
 
 Next, update `counter` to take two parameters: `state`, which defaults to `initialState`, and `action`. Then return `state` instead of the `{ test: true }` object from the previous step. Now when our application initializes Redux will have our initial value of `currentValue`.
 
@@ -129,10 +132,88 @@ Following action types comes the action creators. In Redux, actions are plain ob
 
 The last change we'll be making in our `counter.js` file will be updating the reducer to handle these actions. Our `counter` reducer takes two parameters, `state` and `action`. `state` is the value of our application state and `action` will be an object from one of our action creators. It is a core concept of Redux and state management that state is never mutated, meaning you should never say `state.currentValue = newValue` or `state.values.push( newValue )`. This means that each time that `counter` is called we need to return a **new** state object based on the action and values from the current state **without** changing the current state.
 
-With that in mind, let's get started. First we need to determine what happened by looking at the action's type, a `switch` statement is perfect for this. If the action type is `INCREMENT` we will return a new a state object where the `currentValue` property is equal to the current state's `currentValue` property plus `action.amount`. If the action type is `DECREMENT` we will return a new state object where `currentValue` is equal to the current state's `currentValue` property minus `action.amount`.
+With that in mind, let's get started. First we need to determine what happened by looking at the action's type, a `switch` statement is perfect for this. If the action type is `INCREMENT` we will return a new a state object where the `currentValue` property is equal to the current state's `currentValue` property plus `action.amount`. If the action type is `DECREMENT` we will return a new state object where `currentValue` is equal to the current state's `currentValue` property minus `action.amount`. Lastly, move the `return state;` to the `switch` statement's `default` case.
 
 All that's left in this step is to wire up `App` to dispatch these actions. Inside of `src/App.js` import your `increment` and `decrement` action creator functions. We need these passed as props to `App`, so we are going to create another function underneath `mapStateToProps`. Create the function `mapDispatchToProps` taking in a parameter `dispatch`. `dispatch` is a function provided by Redux that allows us to send an action to the reducer. `mapDispatchToProps` should return an object with two properties: `increment` and `decrement`. Both of these properties should be functions that take in an `amount` parameter and call `dispatch` passing in the return value from an action creator. For example: `dispatch( increment( amount ) );`. Pass `mapDispatchToProps` as a second argument to the existing `connect` function. What we have done here is placed functions on our component's props to allow for easily dispatching action to Redux. If you `console.log( this.props );` you should now see the `currentValue` at 0, as well as your `increment` and `decrement` functions.
 
+<details>
+<summary>**Code Solution**</summary>
+
+```javascript
+// src/ducks/counter.js
+const INCREMENT = "INCREMENT";
+const DECREMENT = "DECREMENT";
+
+const initialState = { currentValue: 0 };
+
+export default function counter( state = initialState, action ) {
+	switch ( action.type ) {
+		case INCREMENT:
+			return { currentValue: state.currentValue + action.amount };
+		case DECREMENT:
+			return { currentValue: state.currentValue - action.amount };
+		default:
+			return state;
+	}
+}
+
+export function increment( amount ) {
+	return { amount, type: INCREMENT };
+}
+
+export function decrement( amount ) {
+	return { amount, type: DECREMENT };
+}
+```
+
+```jsx
+// src/App.js
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { decrement, increment } from "./ducks/counter";
+
+import "./App.css";
+
+class App extends Component {
+	render() {
+		console.log( this.props );
+		return (
+			/* lots of JSX */
+		);
+	}
+}
+
+function mapStateToProps( state ) {
+	return state;
+}
+
+function mapDispatchToProps( dispatch ) {
+	return {
+		  decrement( amount ) {
+			dispatch( decrement( amount ) );
+		}
+		, increment( amount ) {
+			dispatch( increment( amount ) );
+		}
+	}
+}
+
+export default connect( mapStateToProps, mapDispatchToProps )( App );
+```
+
+</details>
+
+### Step 3
+
+**Summary**
+
+In this step we will connect our work from above to the provided React UI, allowing for incrementing and decrementing the value on state. Currently our counter is statically set to `0` and all of our click handlers return `null`, we'll need to update these to use the functions created in the previous step. All of our work in this step will happen in `src/App.js`.
+
+**Detailed Instructions**
+
+We'll start by grabbing the data we need from `this.props`. At the top of `App`'s `render` method, destructure `currentValue`, `increment`, and `decrement` from props. Get the easy part out of the way first and replace the static `0` in the `h1` tag with `currentValue`.
+
+Now we need to make use of our action creators. In the button with the text "+1", change the callback function to invoke `increment` with an argument of `1`. Repeat this step for the "+5" button. Follow the same steps for the "-1" and "-5" buttons with the `decrement` function.
 
 ## Contributions
 
