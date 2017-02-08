@@ -132,9 +132,11 @@ Following action types comes the action creators. In Redux, actions are plain ob
 
 The last change we'll be making in our `counter.js` file will be updating the reducer to handle these actions. Our `counter` reducer takes two parameters, `state` and `action`. `state` is the value of our application state and `action` will be an object from one of our action creators. It is a core concept of Redux and state management that state is never mutated, meaning you should never say `state.currentValue = newValue` or `state.values.push( newValue )`. This means that each time that `counter` is called we need to return a **new** state object based on the action and values from the current state **without** changing the current state.
 
-With that in mind, let's get started. First we need to determine what happened by looking at the action's type, a `switch` statement is perfect for this. If the action type is `INCREMENT` we will return a new a state object where the `currentValue` property is equal to the current state's `currentValue` property plus `action.amount`. If the action type is `DECREMENT` we will return a new state object where `currentValue` is equal to the current state's `currentValue` property minus `action.amount`. Lastly, move the `return state;` to the `switch` statement's `default` case.
+With that in mind, let's get started. First we need to determine what the reducer should do by looking at the action's type, a `switch` statement is perfect for this. If the action type is `INCREMENT` we will return a new a state object where the `currentValue` property is equal to the current state's `currentValue` property plus `action.amount`. If the action type is `DECREMENT` we will return a new state object where `currentValue` is equal to the current state's `currentValue` property minus `action.amount`. Lastly, move the `return state;` to the `switch` statement's `default` case.
 
-All that's left in this step is to wire up `App` to dispatch these actions. Inside of `src/App.js` import your `increment` and `decrement` action creator functions. We need these passed as props to `App`, so we are going to create another function underneath `mapStateToProps`. Create the function `mapDispatchToProps` taking in a parameter `dispatch`. `dispatch` is a function provided by Redux that allows us to send an action to the reducer. `mapDispatchToProps` should return an object with two properties: `increment` and `decrement`. Both of these properties should be functions that take in an `amount` parameter and call `dispatch` passing in the return value from an action creator. For example: `dispatch( increment( amount ) );`. Pass `mapDispatchToProps` as a second argument to the existing `connect` function. What we have done here is placed functions on our component's props to allow for easily dispatching action to Redux. If you `console.log( this.props );` you should now see the `currentValue` at 0, as well as your `increment` and `decrement` functions.
+All that's left in this step is to wire up `App` to dispatch these actions. Inside of `src/App.js` import your `increment` and `decrement` action creator functions. We need these passed as props to `App`, so we are going to create another function underneath `mapStateToProps`. Create the function `mapDispatchToProps` taking in a parameter `dispatch`. `dispatch` is a function provided by Redux that allows us to send an action to the reducer. `mapDispatchToProps` should return an object with two properties: `increment` and `decrement`. Both of these properties should be functions that take in an `amount` parameter and call `dispatch` passing in the return value from an action creator. For example: `dispatch( increment( amount ) );`.
+
+Pass `mapDispatchToProps` as a second argument to the existing `connect` function. What this is doing is placing functions on our component's props to allow for easily dispatching actions to Redux. If you `console.log( this.props );` you should now see the `currentValue` at 0, as well as your `increment` and `decrement` functions.
 
 <details>
 <summary>**Code Solution**</summary>
@@ -215,6 +217,13 @@ We'll start by grabbing the data we need from `this.props`. At the top of `App`'
 
 Now we need to make use of our action creators. In the button with the text "+1", change the callback function to invoke `increment` with an argument of `1`. Repeat this step for the "+5" button. Follow the same steps for the "-1" and "-5" buttons with the `decrement` function.
 
+You should now be able to interact with all of the increment and decrement buttons and see their result update in the view.
+
+<details>
+<summary>**Code Solution**</summary>
+
+</details>
+
 ## Contributions
 
 ### Contributions
@@ -229,6 +238,6 @@ If you see a problem or a typo, please fork, make the necessary changes, and cre
 
 #### 
 
-© DevMountain LLC, 2016. Unauthorized use and/or duplication of this material without express and written permission from DevMountain, LLC is strictly prohibited. Excerpts and links may be used, provided that full and clear credit is given to DevMountain with appropriate and specific direction to the original content.
+© DevMountain LLC, 2017. Unauthorized use and/or duplication of this material without express and written permission from DevMountain, LLC is strictly prohibited. Excerpts and links may be used, provided that full and clear credit is given to DevMountain with appropriate and specific direction to the original content.
 
 <img src="https://devmounta.in/img/logowhiteblue.png" width="250">
