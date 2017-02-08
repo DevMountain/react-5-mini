@@ -52,7 +52,7 @@ class App extends Component {
 				</section>
 				<section className="state">
 					<pre>
-						{ JSON.stringify( this.props.counter, null, 2 ) }
+						{ JSON.stringify( this.props, null, 2 ) }
 					</pre>
 				</section>
 			</div>
