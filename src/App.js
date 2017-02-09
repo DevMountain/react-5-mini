@@ -5,7 +5,7 @@ import { decrement, increment, redo, undo } from "./ducks/counter";
 
 import "./App.css";
 
-class App extends Component {
+export class App extends Component {
 	render() {
 		const {
 			  currentValue
@@ -22,39 +22,39 @@ class App extends Component {
 					<h1 className="counter__current-value">{ currentValue }</h1>
 					<div className="counter__button-wrapper">
 						<button
-							className="counter__button"
+							className="counter__button increment-one"
 							onClick={ () => increment( 1 ) }
 						>
 							+1
 						</button>
 						<button
-							className="counter__button"
+							className="counter__button increment-five"
 							onClick={ () => increment( 5 ) }
 						>
 							+5
 						</button>
 						<button
-							className="counter__button"
+							className="counter__button decrement-one"
 							onClick={ () => decrement( 1 ) }
 						>
 							-1
 						</button>
 						<button
-							className="counter__button"
+							className="counter__button decrement-five"
 							onClick={ () => decrement( 5 ) }
 						>
 							-5
 						</button>
 						<br />
 						<button
-							className="counter__button"
+							className="counter__button undo"
 							disabled={ previousValues.length === 0 }
 							onClick={ undo }
 						>
 							Undo
 						</button>
 						<button
-							className="counter__button"
+							className="counter__button redo"
 							disabled={ futureValues.length === 0 }
 							onClick={ redo }
 						>
