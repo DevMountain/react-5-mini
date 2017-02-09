@@ -76,7 +76,7 @@ Make the application aware of our Redux store using the `Provider` component fro
 
 Begin in the root of application at `src/index.js` by importing the `Provider` component from React-Redux and `store` from `src/store.js`. Wrap `App` in the `Provider` component, passing `store` as a prop to `Provider`. This will make our application aware of the Redux store and allow us to gain access to data.
 
-Finally, we need to connect `App` to our application's state. To do this we first need to import the aptly named `connect` function from `react-redux`. Then, underneath your `App` component, create a function `mapStateToProps` that takes a parameter `state`. This function will tell `connect` which pieces of application state we're interested in. Right now we want all of it, so just return `state`.
+Open up `src/App.js` so we can connect `App` to our application's state. To do this we first need to import the aptly named `connect` function from `react-redux`. Then, underneath your `App` component, create a function `mapStateToProps` that takes a parameter `state`. This function will tell `connect` which pieces of application state we're interested in. Right now we want all of it, so just return `state`.
 
 Using `connect` we are going to "decorate" our component, which is a fancy way of saying that we are going to let it do things it wasn't able to before, such as access data in Redux. To do this we need to first create our decorator by invoking `connect` and passing in `mapStateToProps`. Once our decorator is created we need to invoke it and pass in `App`, exporting the result by default.
 
