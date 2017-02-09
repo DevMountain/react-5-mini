@@ -2,7 +2,7 @@
 <img src="https://raw.githubusercontent.com/DevMountain/redux-counter/master/SolutionPicture.png" />
 
 ### Setup
-To begin, fork and clone this repository. Once it has finished downloading `cd` into the project root and run `npm i` to fetch the project dependencies. After they are fetched run `npm start` and a browser window will open at `http://localhost:3000` displaying a (non-functioning) counter app.
+To begin, fork and clone this repository. Once it has finished downloading `cd` into the project root and run `npm i` to fetch the project dependencies. After they are fetched run `npm start` and a browser window will open at `http://localhost:3000` displaying a (non-functioning) counter app. In another terminal window run `npm test` to run the test suite.
 
 ### The plan
 Our goal with this mini project is to create a small counter application using React and Redux. Beyond the standard increment and decrement functionality, we also want to implement an undo/redo stack similar to what you see in most text editors.
@@ -337,7 +337,7 @@ export default connect( mapStateToProps, { decrement, increment } )( App );
 
 </details>
 
-### Step 4 - **Black Diamond**
+### Step 5 - **Black Diamond**
 
 **Summary**
 
