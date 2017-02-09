@@ -463,6 +463,8 @@ export function redo() {
 
 ```
 
+</details>
+
 <details>
 
 <summary>`src/App.js`</summary>
@@ -548,8 +550,6 @@ function mapStateToProps( state ) {
 
 export default connect( mapStateToProps, { decrement, increment, redo, undo } )( App );
 ```
-
-</details>
 
 </details>
 
