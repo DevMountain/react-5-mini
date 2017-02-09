@@ -336,6 +336,134 @@ export default connect( mapStateToProps, { decrement, increment } )( App );
 
 </details>
 
+### Step 4 - **Black Diamond**
+
+**Summary**
+
+In this step we will implement undo/redo logic inside of the counter reducer.
+
+**Instructions**
+
+Create two new action types, `UNDO` and `REDO`, as well as their corresponding action creators. Refactor `initialState` and the `counter` reducer to handle undo and redo actions.
+
+**Detailed Instructions**
+
+Open up `src/ducks/counter.js`. Beneath the other actions create two more - `UNDO`, set equal to `"UNDO"`, and `REDO`, set equal to `"REDO"`. Create corresponding action creators `undo` and `redo` alongside your other action creators. Because we will already have all the data we need on `state`, the actions returned by these action creators only need to have a `type` property. Change the `initialState` variable by adding two properties - `futureValues` and `previousValues`, both set to empty arrays.
+
+Because we changed how `initialState` looks we need to update how we handle existing actions before adding handlers for the new ones. Adjust both the `INCREMENT` and `DECREMENT` cases so that they return an object that looks something like this:
+```javascript
+{
+	  currentValue: state.currentValue /* + or - */ action.amount
+	, futureValues: []
+	, previousValues: [ state.currentValue, ...state.previousValues ]
+}
+```
+
+A few things to note:
+
+* We are handling the change to `currentValue` exactly the same as before.
+* We reset `futureValues` to an empty array, because if we have incremented or decremented since the last undo the redo stack is no longer valid.
+* We save the previous state's `currentValue` into the `previousValues` array **without mutating** the previous state's values.
+
+Now that fixing our old code is out of the way, let's write the logic for `UNDO` and `REDO` actions. Start by writing a case for `UNDO`. As always in a reducer, this case will return an object representing our updated state. This object should:
+
+* Set `currentValue` equal to the previous state's `previousValues[ 0 ]`
+* Set `futureValue` equal to an array containing the previous state's `currentValue` as well as any other `futureValues` that we're already on `state`.
+* Set `previousValues` to a copy of the previous state's `previousValues` **without** the first index (because that value is now living at `currentValue`).
+
+<details>
+
+<summary>It should look something like this</summary>
+
+```javascript
+{
+	  currentValue: state.previousValues[ 0 ]
+	, futureValues: [ state.currentValue, ...state.futureValues ]
+	, previousValues: state.previousValues.slice( 1, state.previousValues.length )
+}
+```
+
+</details>
+
+Once that is complete we can add the logic for `REDO`. `REDO` will be handled exactly the same as `UNDO` was, only the names have changed. Anything that was done `previousValues` above should now be done to `futureValues` and vice versa.
+
+All that is left now is to connect these functions to the `App` component and tie them to the appropriate buttons. Inside of `src/App.js`, import the `undo` and `redo` functions from `src/ducks/counter.js`. Edit the object passed as a second argument to `connect` to include these functions. Destructure them from `this.props` and pass them to the correct buttons.
+
+All done! You should now be able to increment and decrement, undo and redo, and see the values of state changing on the right side of the screen!
+
+<details>
+
+<summary>**Code Solution**</summary>
+
+<details>
+
+<summary>`src/ducks/counter.js`</summary>
+
+```javascript
+const INCREMENT = "INCREMENT";
+const DECREMENT = "DECREMENT";
+const UNDO = "UNDO";
+const REDO = "REDO";
+
+const initialState = {
+	  currentValue: 0
+	, futureValues: []
+	, previousValues: []
+};
+
+export default function counter( state = initialState, action ) {
+	switch ( action.type ) {
+		case INCREMENT:
+			return {
+				  currentValue: state.currentValue + action.amount
+				, futureValues: []
+				, previousValues: [ state.currentValue, ...state.previousValues ]
+			};
+		case DECREMENT:
+			return {
+				  currentValue: state.currentValue - action.amount
+				, futureValues: []
+				, previousValues: [ state.currentValue, ...state.previousValues ]
+			};
+		case UNDO:
+			return {
+				  currentValue: state.previousValues[ 0 ]
+				, futureValues: [ state.currentValue, ...state.futureValues ]
+				, previousValues: state.previousValues.slice( 1, state.previousValues.length )
+			};
+		case REDO:
+			return {
+				  currentValue: state.futureValues[ 0 ]
+				, futureValues: state.futureValues.slice( 1, state.futureValues.length )
+				, previousValues: [ state.currentValue, ...state.previousValues ]
+			};
+		default:
+			return state;
+	}
+}
+
+export function increment( amount ) {
+	return { amount, type: INCREMENT };
+}
+
+export function decrement( amount ) {
+	return { amount, type: DECREMENT };
+}
+
+export function undo() {
+	return { type: UNDO };
+}
+
+export function redo() {
+	return { type: REDO };
+}
+
+```
+
+</details>
+
+</details>
+
 ## Contributions
 
 ### Contributions
