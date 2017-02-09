@@ -551,8 +551,6 @@ export default connect( mapStateToProps, { decrement, increment, redo, undo } )(
 
 </details>
 
-<details>
-
 </details>
 
 </details>
