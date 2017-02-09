@@ -94,4 +94,8 @@ if ( BLACK_DIAMOND ) {
 		const shouldNotBeDisabled = app.find( ".undo" ).first().props().disabled;
 		expect( shouldNotBeDisabled ).toBe( false );
 	} );
+} else {
+	test( "Set the BLACK_DIAMOND variable in src/ducks/counter.js to true to see test results for the black diamond", () => {
+		expect( true ).toBe( true );
+	} );
 }
