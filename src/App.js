@@ -5,6 +5,7 @@ import "./App.css";
 
 class App extends Component {
 	render() {
+		console.log( this.props );
 		return (
 			<div className="app">
 				<section className="counter">
@@ -65,4 +66,4 @@ function mapStateToProps( state ) {
 	return state;
 }
 
-export default App;
+export default connect( mapStateToProps )( App );
