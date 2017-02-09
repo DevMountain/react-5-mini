@@ -27,6 +27,7 @@ We interact with Redux via functions commonly called reducers. Reducer functions
 	* `state` with a default value of `initialState`
 	* `action`
 * Return `state`
+* Be exported by default
 
 Right now it doesn't do much, but we'll come back to it once we have built some actions!
 
