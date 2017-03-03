@@ -11,8 +11,14 @@ Our goal with this mini project is to create a small counter application using R
 **Summary**
 Right now nothing works! That's because Redux will be handling all of our state management and we haven't wired it up yet. To get started we'll need to install some new dependencies, create a reducer, and create a Redux store.
 
+**A finished example can be found [here](https://devmountain.github.io/categorizer/)**
+
 **Instructions**
-Install `redux` and `react-redux`, create an initial state and reducer in `src/ducks/counter.js`, and create a Redux store from that reducer in `src/store.js`.
+
+* Install `redux` and `react-redux`
+* Create an initial state `src/ducks/counter.js`
+* Write a simple reducer in `src/ducks/counter.js`
+* Create a Redux store in `src/store.js`
 
 **Detailed Instructions**
 
@@ -70,13 +76,15 @@ export default createStore( counter );
 Now that we have a Redux store we need to make our application aware that it exists and connect relevant components.
 
 **Instructions**
-Make the application aware of our Redux store using the `Provider` component from React-Redux, connect the `App` component to Redux.
+
+* Make the application aware of our Redux store using the React-Redux `Provider` component.
+* Connect the `App` component to Redux.
 
 **Detailed Instructions**
 
-Begin in the root of application at `src/index.js` by importing the `Provider` component from React-Redux and `store` from `src/store.js`. Wrap `App` in the `Provider` component, passing `store` as a prop to `Provider`. This will make our application aware of the Redux store and allow us to gain access to data.
+Begin in the root of application at `src/index.js` by importing the `Provider` component from React-Redux and `store` from `src/store.js`. Wrap the `App` component in a `Provider` component. Pass `store` as a prop to `Provider`. This will make our application aware of the Redux store and allow us to gain access to data.
 
-Open up `src/App.js` so we can connect `App` to our application's state. To do this we first need to import the aptly named `connect` function from `react-redux`. Then, underneath your `App` component, create a function `mapStateToProps` that takes a parameter `state`. This function will tell `connect` which pieces of application state we're interested in. Right now we want all of it, so just return `state`.
+Open up `src/App.js` so we can connect `App` to our application's state. To do this we first need to import the aptly named `connect` function from `react-redux`. Then, underneath your `App` component definition, create a function `mapStateToProps` that takes a parameter `state`. This function will tell `connect` which pieces of application state we're interested in. Right now we want all of it, so just return `state`.
 
 Using `connect` we are going to "decorate" our component, which is a fancy way of saying that we are going to let it do things it wasn't able to before, such as access data in Redux. To do this we need to first create our decorator by invoking `connect` and passing in `mapStateToProps`. Once our decorator is created we need to invoke it and pass in `App`, exporting the result by default. This is a little confusing at first, so check out the example below!
 
@@ -172,13 +180,16 @@ Now that our application is talking to Redux we need to set up Redux to actually
 
 **Instructions**
 
-Create  `INCREMENT` and `DECREMENT` action types, write corresponding action creator functions `increment` and `decrement`, which take an `amount` parameter, and update the reducer to process these actions into state changes.
+* Create `INCREMENT` and `DECREMENT` action types.
+* Write action creators corresponding to `INCREMENT` and `DECREMENT`.
+	* Each of these action creators should accept an `amount` parameter.
+* Update the reducer to process these actions into state changes.
 
 **Detailed Instructions**
 
 We currently have state, but no way to do anything with it. To be able to access that data we first need to create some action types. Action types describe to our reducer (`counter`) what has occurred when Redux receives an action. We'll start with two action types, each stored in its own variable. Create a variable named `INCREMENT` and set it equal to the string `"INCREMENT"`,  and a variable named `DECREMENT` set equal to the string `"DECREMENT"`. We use all capital names here to indicate that these values are constants that will never be altered by the application.
 
-Following action types comes the action creators. In Redux, actions are plain objects containing a type (describing what happened) and any data that might be necessary to the action. Our first action creator will be a function named `increment` that takes in a parameter of `amount`. The function then returns an object with two properties: `amount` - set equal to the `amount` parameter, and `type` set equal to the `INCREMENT` action type.  Create a `decrement` function that mimics `increment`, the only difference being that `type` should now be equal to `DECREMENT`. Export both of these functions.
+Following action types comes the action creators. In Redux, actions are plain objects containing a type (describing what happened) and any data that might be necessary to the action. Our first action creator will be a function named `increment` that takes in a parameter of `amount`. `increment` will return an object with two properties: `amount` - set equal to the `amount` parameter, and `type` set equal to the `INCREMENT` action type. Create a `decrement` function that mimics `increment`, the only difference being that `type` should now be equal to `DECREMENT`. Export both of these functions.
 
 The last change we'll be making in our `counter.js` file will be updating the reducer to handle these actions. It is a core concept of Redux and state management that state is never mutated, meaning you should never say `state.currentValue++`. This means that each time `counter` is called we need to return a **new** state object from the action and values from the current state **without** changing the current state.
 
@@ -230,7 +241,9 @@ Now that we can effectively manage application state we need to wire up the `App
 
 **Instructions**
 
-Import the `increment` and `decrement` action creators to `App`, use `connect`'s `mapDispatchToProps` to place the action creators on props, attach the action creators to the appropriate buttons.
+* Import the `increment` and `drecrement` action creators to `src/App.js`.
+* Use `connect`'s `mapDispatchToProps` to place the action creators on `App`'s props.
+* Attach the action creators to the appropriate buttons.
 
 **Detailed Instructions**
 
@@ -259,7 +272,7 @@ import { connect } from "react-redux";
 
 import "./App.css";
 
-import { decrement, increment, redo, undo } from "./ducks/counter";
+import { decrement, increment } from "./ducks/counter";
 
 class App extends Component {
 	render() {
@@ -339,17 +352,21 @@ export default connect( mapStateToProps, { decrement, increment } )( App );
 
 ### Step 5 - **Black Diamond**
 
+**Be sure to set the `BLACK_DIAMOND` variable in `src/ducks/counter.js` to `true` to allow for testing on this step**
+
 **Summary**
 
 In this step we will implement undo/redo logic inside of the counter reducer.
 
 **Instructions**
 
-Create two new action types, `UNDO` and `REDO`, as well as their corresponding action creators. Refactor `initialState` and the `counter` reducer to handle undo and redo actions.
+* Create `UNDO` and `REDO` action types.
+* Write action creators for `UNDO` and `REDO`.
+* Refactor `initialState` and `counter` to handle undo/redo logic.
 
 **Detailed Instructions**
 
-Open up `src/ducks/counter.js`. Beneath the other actions create two more - `UNDO`, set equal to `"UNDO"`, and `REDO`, set equal to `"REDO"`. Create corresponding action creators `undo` and `redo` alongside your other action creators. Because we will already have all the data we need on `state`, the actions returned by these action creators only need to have a `type` property. Change the `initialState` variable by adding two properties - `futureValues` and `previousValues`, both set to empty arrays.
+Open up `src/ducks/counter.js`. Create two new actions - `UNDO` and `REDO`. Create the corresponding action creators `undo` and `redo` alongside your other action creators. Because we will already have all the data we need on `state`, the actions returned by these action creators only need to have a `type` property. Change the `initialState` variable by adding two properties - `futureValues` and `previousValues`, both set to empty arrays.
 
 Because we changed how `initialState` looks we need to update how we handle existing actions before adding handlers for the new ones. Adjust both the `INCREMENT` and `DECREMENT` cases so that they return an object that looks something like this:
 ```javascript
