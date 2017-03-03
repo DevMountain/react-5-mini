@@ -11,6 +11,8 @@ Our goal with this mini project is to create a small counter application using R
 **Summary**
 Right now nothing works! That's because Redux will be handling all of our state management and we haven't wired it up yet. To get started we'll need to install some new dependencies, create a reducer, and create a Redux store.
 
+**A finished example can be found [here](https://devmountain.github.io/categorizer/)**
+
 **Instructions**
 Install `redux` and `react-redux`, create an initial state and reducer in `src/ducks/counter.js`, and create a Redux store from that reducer in `src/store.js`.
 
