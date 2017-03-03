@@ -7,7 +7,7 @@ To begin, fork and clone this repository. Once it has finished downloading `cd` 
 ### The plan
 Our goal with this mini project is to create a small counter application using React and Redux. Beyond the standard increment and decrement functionality, we also want to implement an undo/redo stack similar to what you see in most text editors.
 
-**A finished example can be found [here](https://devmountain.github.io/categorizer/)**
+**A finished example can be found [here](https://devmountain.github.io/redux-counter/)**
 
 ### Step 1
 **Summary**
