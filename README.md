@@ -44,30 +44,34 @@ Next, we will need to create our Redux store in `src/store.js`. A Redux store is
 
 <details>
 
-<summary>**Code Solution**</summary>
+<summary><b>Code Solution</b></summary>
 
 <details>
 
-<summary>`src/ducks/counter.js`</summary>
-```js
+<summary><code>src/ducks/counter.js</code></summary>
+
+```javascript
 const initialState = { currentValue: 0 };
 
 export default function counter( state = initialState, action ) {
 	return state;
 }
 ```
+
 </details>
 
 <details>
 
-<summary>`src/store.js`</summary>
-```js
+<summary><code>src/store.js</code></summary>
+
+```javascript
 import { createStore } from "redux";
 
 import counter from "./ducks/counter";
 
 export default createStore( counter );
 ```
+
 </details>
 
 </details>
@@ -119,13 +123,13 @@ Now that we're all wired up, we just need to make sure everything is working! Do
 
 <details>
 
-<summary>**Code Solution**</summary>
+<summary><b>Code Solution</b></summary>
 
 <details>
 
-<summary>`src/index.js`</summary>
+<summary><code>src/index.js</code></summary>
 
-```
+```jsx
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
@@ -147,7 +151,7 @@ ReactDOM.render(
 
 <details>
 
-<summary>`src/App.js`</summary>
+<summary><code>src/App.js</code></summary>
 
 ```jsx
 import React, { Component } from "react";
@@ -200,11 +204,11 @@ With that in mind, let's get started. First we need to determine what the reduce
 
 <details>
 
-<summary>**Code Solution**</summary>
+<summary><b>Code Solution</b></summary>
 
 <details>
 
-<summary>`src/ducks/counter.js`</summary>
+<summary><code>src/ducks/counter.js</code></summary>
 
 ```javascript
 const INCREMENT = "INCREMENT";
@@ -263,11 +267,11 @@ You should now be able to interact with all of the increment and decrement butto
 
 <details>
 
-<summary>**Code Solution**</summary>
+<summary><b>Code Solution</b></summary>
 
 <details>
 
-<summary>`src/App.js`</summary>
+<summary><code>src/App.js</code></summary>
 
 ```jsx
 import React, { Component } from "react";
@@ -416,11 +420,11 @@ All done! You should now be able to increment and decrement, undo and redo, and 
 
 <details>
 
-<summary>**Code Solution**</summary>
+<summary><b>Code Solution</b></summary>
 
 <details>
 
-<summary>`src/ducks/counter.js`</summary>
+<summary><code>src/ducks/counter.js</code></summary>
 
 ```javascript
 const INCREMENT = "INCREMENT";
@@ -487,7 +491,7 @@ export function redo() {
 
 <details>
 
-<summary>`src/App.js`</summary>
+<summary><code>src/App.js</code></summary>
 
 ```jsx
 import React, { Component } from "react";
