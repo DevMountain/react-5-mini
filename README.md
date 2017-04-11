@@ -248,7 +248,7 @@ Now that we can effectively manage application state we need to wire up the `App
 
 **Instructions**
 
-* Import the `increment` and `drecrement` action creators to `src/App.js`.
+* Import the `increment` and `decrement` action creators to `src/App.js`.
 * Use `connect`'s `mapDispatchToProps` to place the action creators on `App`'s props.
 * Attach the action creators to the appropriate buttons.
 
