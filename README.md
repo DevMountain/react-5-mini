@@ -134,62 +134,48 @@ export default connect( mapStateToProps )( App );
 
 ### Step 3
 
-**Summary**
+### Summary
 
-Now that our application is talking to Redux, we need to set up Redux to actually do the things we want it to do. We'll start by creating action types, creating action creators, and implementing increment/decrement logic.
+In this step, we'll set up Redux to actually execute actions. We'll start by creating action types, creating action creators, and implementing increment/decrement logic.
 
-**Instructions**
+### Instructions
 
 * Create `INCREMENT` and `DECREMENT` action types.
-* Write action creators corresponding to `INCREMENT` and `DECREMENT`.
-	* Each of these action creators should accept an `amount` parameter.
+* Write action creators corresponding to `INCREMENT` and `DECREMENT` action types.
+  * Each of these action creators should accept an `amount` argument.
 * Update the reducer to process these actions into state changes.
-
-**Detailed Instructions**
-
-We currently have state, but no way to do anything with it. To be able to access that data, we first need to create some action types. Action types describe to our reducer (`counter`) what has occurred when Redux receives an action. We'll start with two action types, each stored in its own variable. Create a variable named `INCREMENT` and set it equal to the string `"INCREMENT"`,  and a variable named `DECREMENT` set equal to the string `"DECREMENT"`. We use all capital names here to indicate that these values are constants that will never be altered by the application.
-
-Following action types comes the action creators. In Redux, actions are plain objects containing a type (describing what happened) and any data that might be necessary to the action. Our first action creator will be a function named `increment` that takes in a parameter of `amount`. `increment` will return an object with two properties: `amount` - set equal to the `amount` parameter, and `type` set equal to the `INCREMENT` action type. Create a `decrement` function that mimics `increment`, the only difference being that `type` should now be equal to `DECREMENT`. Export both of these functions.
-
-The last change we'll be making in our `counter.js` file will be updating the reducer to handle these actions. It is a core concept of Redux and state management that state is never mutated, meaning you should never say `state.currentValue++`. This means that each time `counter` is called we need to return a **new** state object from the action and values from the current state **without** changing the current state.
-
-With that in mind, let's get started. First we need to determine what the reducer should do by looking at the action's type, a `switch` statement is perfect for this. If the action type is `INCREMENT`, we will return a new a state object where the `currentValue` property is equal to `state`'s `currentValue` property plus `action.amount`. If the action type is `DECREMENT` we will return a new state object where `currentValue` is equal to `state`'s `currentValue` property minus `action.amount`. Lastly, move the `return state` to the `switch` statement's `default` case.
+  * `INCREMENT` should increment `currentValue` by the given `amount`.
+  * `DECREMENT` should decrement `currentValue` by the given `amount`.
 
 <details>
 
-<summary><b>Code Solution</b></summary>
+<summary> <code> ./src/ducks/counter.js </code> </summary>
 
-<details>
+```js
+const initialState = { currentValue: 0 };
 
-<summary><code>src/ducks/counter.js</code></summary>
-
-```javascript
 const INCREMENT = "INCREMENT";
 const DECREMENT = "DECREMENT";
 
-const initialState = { currentValue: 0 };
-
 export default function counter( state = initialState, action ) {
-	switch ( action.type ) {
-		case INCREMENT:
-			return { currentValue: state.currentValue + action.amount };
-		case DECREMENT:
-			return { currentValue: state.currentValue - action.amount };
-		default:
-			return state;
-	}
+  switch ( action.type ) {
+    case INCREMENT:
+      return { currentValue: state.currentValue + action.amount };
+    case DECREMENT:
+      return { currentValue: state.currentValue - action.amount };
+    default:
+      return state;
+  }
 }
 
 export function increment( amount ) {
-	return { amount, type: INCREMENT };
+  return { amount, type: INCREMENT };
 }
 
 export function decrement( amount ) {
-	return { amount, type: DECREMENT };
+  return { amount, type: DECREMENT };
 }
 ```
-
-</details>
 
 </details>
 
