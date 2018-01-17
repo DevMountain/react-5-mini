@@ -467,6 +467,8 @@ export default connect( mapStateToProps, { decrement, increment, redo, undo } )(
 
 </details>
 
+<br />
+
 <img src="https://github.com/DevMountain/react-5-mini/blob/solution/readme-assets/4g.gif" />
 
 ## Contributions
