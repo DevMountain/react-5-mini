@@ -144,6 +144,7 @@ In this step, we'll set up Redux to actually execute actions. We'll start by cre
 
 ### Instructions
 
+* Open `./src/ducks/counter.js`.
 * Create `INCREMENT` and `DECREMENT` action types.
 * Write action creators corresponding to `INCREMENT` and `DECREMENT` action types.
   * Each of these action creators should accept an `amount` argument.
@@ -293,6 +294,7 @@ In this step, we'll implement undo/redo logic into our reducer.
 
 ### Instructions
 
+* Open `./src/ducks/counter.js`.
 * Create `UNDO` and `REDO` action types.
 * Write action creators for `UNDO` and `REDO`.
 * Refactor `initialState` and `counter` to handle undo/redo logic.
@@ -372,6 +374,12 @@ export function redo() {
 In this step, we'll import `undo` and `redo` action creators into our `App.js` and hook them up their respective buttons.
 
 ### Instructions
+
+* Open `./src/App.js`.
+* Import `undo` and `redo` action creators.
+* Add `undo` and `redo` to `mapDispatchToProps`.
+* Destrcuture `undo` and `redo` from `props`.
+* Hook up the `undo` and `redo` buttons to their respective action creators.
 
 ### Solution
 
