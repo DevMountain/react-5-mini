@@ -1,56 +1,40 @@
 <img src="https://devmounta.in/img/logowhiteblue.png" width="250" align="right">
 
-# Redux Counter - Mini
+# Project Summary
+
+In this project, we'll create a small counter application using React and Redux. We'll also include extra functionality for undo/redo actions.
+
+# Live Example
+
+<a href="#">Click Me!</a>
+
 <img src="https://raw.githubusercontent.com/DevMountain/redux-counter/master/SolutionPicture.png" />
 
-### Setup
-To begin, fork and clone this repository. Once it has finished downloading, `cd` into the project root and run `npm i` to fetch the project dependencies. After they are fetched, run `npm start` and a browser window will open at `http://localhost:3000` displaying a (non-functioning) counter app. In another terminal window, run `npm test` to run the test suite.
+## Setup
 
-### The plan
-Our goal with this mini project is to create a small counter application using React and Redux. Beyond the standard increment and decrement functionality, we also want to implement an undo/redo stack similar to what you see in most text editors.
+* `fork` and `clone` this repository. 
+* `cd` into the project root.
+* Run `npm install` to fetch the project dependencies.
+* Run `npm start` to spin up a development server.
 
-**A finished example can be found [here](https://devmountain.github.io/redux-counter/)**
+## Step 1
 
-### Step 1
-**Summary**
-Right now nothing works! That's because Redux will be handling all of our state management and we haven't wired it up yet. To get started, we'll need to install some new dependencies, create a reducer, and create a Redux store.
+### Summary
 
+In this step, we'll install some new dependencies, create a reducer, and create a Redux store.
 
-**Instructions**
+### Instructions
 
 * Install `redux` and `react-redux`
 * Create an initial state `src/ducks/counter.js`
 * Write a simple reducer in `src/ducks/counter.js`
 * Create a Redux store in `src/store.js`
 
-**Detailed Instructions**
-
-Begin by running `npm i redux react-redux --save` to install the required dependencies.
-
-Open up `src/ducks/counter.js` and begin by creating a variable named `initialState`. `initialState` should be an object with one property, `currentValue`, set to `0`. This variable determines how we want our application state to look when the application first loads.
-
-We interact with Redux via functions commonly called reducers. Reducer functions are where we will be processing all changes to our application's state. Each time a reducer is invoked, Redux passes an object representing the current state and an "action" object that describes what prompted the state change. Because Redux doesn't have a representation of our state the first time it runs, we must provide it with our `initialState`. With this in mind, let's write our first reducer function, it should:
-
-* Be named `counter`
-* Take two parameters
-	* `state` with a default value of `initialState`
-	* `action`
-* Return `state`
-* Be exported by default
-
-Right now it doesn't do much, but we'll come back to it once we have built some actions!
-
-Next, we will need to create our Redux store in `src/store.js`. A Redux store is really just a big object that contains all of our application state data. Start by importing `createStore` from Redux and our `counter` reducer from `src/ducks/counter.js`.  Invoke `createStore` passing in `counter` and export the result by default.
-
 <details>
 
-<summary><b>Code Solution</b></summary>
+<summary> <code> ./src/ducks/counter.js </code> </summary>
 
-<details>
-
-<summary><code>src/ducks/counter.js</code></summary>
-
-```javascript
+```js
 const initialState = { currentValue: 0 };
 
 export default function counter( state = initialState, action ) {
@@ -62,9 +46,9 @@ export default function counter( state = initialState, action ) {
 
 <details>
 
-<summary><code>src/store.js</code></summary>
+<summary> <code> ./src/store.js </code> </summary>
 
-```javascript
+```js
 import { createStore } from "redux";
 
 import counter from "./ducks/counter";
@@ -74,9 +58,7 @@ export default createStore( counter );
 
 </details>
 
-</details>
-
-### Step 2
+## Step 2
 
 **Summary**
 
@@ -581,18 +563,12 @@ export default connect( mapStateToProps, { decrement, increment, redo, undo } )(
 
 ## Contributions
 
-### Contributions
-
-#### 
- 
 If you see a problem or a typo, please fork, make the necessary changes, and create a pull request so we can review your changes and merge them into the master repo and branch.
 
 ## Copyright
 
-### Copyright
-
-#### 
-
 © DevMountain LLC, 2017. Unauthorized use and/or duplication of this material without express and written permission from DevMountain, LLC is strictly prohibited. Excerpts and links may be used, provided that full and clear credit is given to DevMountain with appropriate and specific direction to the original content.
 
+<p align="center">
 <img src="https://devmounta.in/img/logowhiteblue.png" width="250">
+</p>
