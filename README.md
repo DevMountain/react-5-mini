@@ -62,58 +62,30 @@ export default createStore( counter );
 
 ## Step 2
 
-**Summary**
+### Summary
 
-Now that we have a Redux store, we need to make our application aware that it exists and connect relevant components.
+In this step, we'll make our application aware that redux exists and connect the `App` component.
 
-**Instructions**
+### Instructions
 
-* Make the application aware of our Redux store using the React-Redux `Provider` component.
+* Open `src/index.js`.
+* Import `Provider` from `react-redux`.
+* Import `store` from `./src/store.js`.
+* Wrap the `App` component in the `Provider` component.
+  * Add a `store` prop that equals our imported `store`.
+* Open `./src/App.js`.
+* Import `connect` from `react-redux`.
 * Connect the `App` component to Redux.
-
-**Detailed Instructions**
-
-Begin in the root of application at `src/index.js` by importing the `Provider` component from React-Redux and `store` from `src/store.js`. Wrap the `App` component in a `Provider` component. Pass `store` as a prop to `Provider`. This will make our application aware of the Redux store and allow us to gain access to data.
-
-Open up `src/App.js` so we can connect `App` to our application's state. To do this, we first need to import the aptly named `connect` function from `react-redux`. Then, underneath your `App` component definition, create a function `mapStateToProps` that takes a parameter `state`. This function will tell `connect` which pieces of application state we're interested in. Right now we want all of it, so just return `state`.
-
-Using `connect`, we are going to "decorate" our component, which is a fancy way of saying that we are going to let it do things it wasn't able to before, such as access data in Redux. To do this we need to first create our decorator by invoking `connect` and passing in `mapStateToProps`. Once our decorator is created, we need to invoke it and pass in `App`, exporting the result by default. This is a little confusing at first, so check out the example below!
+  * Use a `mapStateToProps` function that takes in state.
+    * Return `state` for now.
 
 <details>
 
-<summary>Decorator Example</summary>
-
-```jsx
-function mapStateToProps( state ) {
-	return state;
-}
-const decorator = connect( mapStateToProps );
-const decoratedComponent = decorator( App );
-export default decoratedComponent;
-```
-This is usually shortened to
-
-```jsx
-function mapStateToProps( state ) {
-	return state;
-}
-export default connect( mapStateToProps )( App );
-```
-___
-
-</details>
-
-Now that we're all wired up, we just need to make sure everything is working! Do this by `console.log`ing `this.props` at the top of `App`'s `render` method. You should see an output of `{ currentValue: 0 }`. Whew, that was a lot of setup! Luckily we only have to do most of this once per application.
-
 <details>
 
-<summary><b>Code Solution</b></summary>
+<summary> <code> ./src/index.js </code> </summary>
 
-<details>
-
-<summary><code>src/index.js</code></summary>
-
-```jsx
+```js
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
@@ -124,10 +96,10 @@ import store from "./store";
 import App from "./App";
 
 ReactDOM.render(
-	<Provider store={ store }>
-		<App />
-	</Provider>
-	, document.getElementById( 'root' )
+  <Provider store={ store }>
+    <App />
+  </Provider>
+  , document.getElementById( 'root' )
 );
 ```
 
@@ -135,25 +107,24 @@ ReactDOM.render(
 
 <details>
 
-<summary><code>src/App.js</code></summary>
+<summary> <code> ./src/App.js </code> </summary>
 
-```jsx
+```js
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import "./App.css";
 
 class App extends Component {
-	render() {
-		console.log( this.props );
-		return (
-			/* lots of jsx */
-		);
-	}
+  render() {
+    return (
+      /* lots of jsx */
+    );
+  }
 }
 
 function mapStateToProps( state ) {
-	return state;
+  return state;
 }
 
 export default connect( mapStateToProps )( App );
@@ -161,7 +132,7 @@ export default connect( mapStateToProps )( App );
 
 </details>
 
-</details>
+<img src="https://github.com/DevMountain/react-5-mini/blob/solution/readme-assets/2.png" />
 
 ### Step 3
 
