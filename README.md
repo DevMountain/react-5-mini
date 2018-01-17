@@ -304,42 +304,42 @@ In this step, we'll implement undo/redo logic into our reducer.
 <summary> <code> ./src/ducks/counter.js </code> </summary>
 
 ```js
-const INCREMENT = "INCREMENT";
-const DECREMENT = "DECREMENT";
-const UNDO = "UNDO";
-const REDO = "REDO";
-
 const initialState = {
   currentValue: 0,
   futureValues: [],
   previousValues: []
 };
 
+const INCREMENT = "INCREMENT";
+const DECREMENT = "DECREMENT";
+const UNDO = "UNDO";
+const REDO = "REDO";
+
 export default function counter( state = initialState, action ) {
   switch ( action.type ) {
     case INCREMENT:
       return {
-          currentValue: state.currentValue + action.amount
-        , futureValues: []
-        , previousValues: [ state.currentValue, ...state.previousValues ]
+        currentValue: state.currentValue + action.amount, 
+        futureValues: [],
+        previousValues: [ state.currentValue, ...state.previousValues ]
       };
     case DECREMENT:
       return {
-          currentValue: state.currentValue - action.amount
-        , futureValues: []
-        , previousValues: [ state.currentValue, ...state.previousValues ]
+        currentValue: state.currentValue - action.amount,
+        futureValues: [],
+        previousValues: [ state.currentValue, ...state.previousValues ]
       };
     case UNDO:
       return {
-          currentValue: state.previousValues[ 0 ]
-        , futureValues: [ state.currentValue, ...state.futureValues ]
-        , previousValues: state.previousValues.slice( 1, state.previousValues.length )
+        currentValue: state.previousValues[ 0 ],
+        futureValues: [ state.currentValue, ...state.futureValues ],
+        previousValues: state.previousValues.slice( 1, state.previousValues.length )
       };
     case REDO:
       return {
-          currentValue: state.futureValues[ 0 ]
-        , futureValues: state.futureValues.slice( 1, state.futureValues.length )
-        , previousValues: [ state.currentValue, ...state.previousValues ]
+        currentValue: state.futureValues[ 0 ],
+        futureValues: state.futureValues.slice( 1, state.futureValues.length ),
+        previousValues: [ state.currentValue, ...state.previousValues ]
       };
     default:
       return state;
@@ -375,12 +375,11 @@ In this step, we'll import `undo` and `redo` action creators into our `App.js` a
 
 ### Solution
 
-
 <details>
 
-<summary><code>src/App.js</code></summary>
+<summary> <code> ./src/App.js </code> </summary>
 
-```jsx
+```js
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
@@ -389,80 +388,74 @@ import { decrement, increment, redo, undo } from "./ducks/counter";
 import "./App.css";
 
 class App extends Component {
-	render() {
-		const {
-			  currentValue
-			, decrement
-			, futureValues
-			, increment
-			, previousValues
-			, redo
-			, undo
-		} = this.props;
-		return (
-			<div className="app">
-				<section className="counter">
-					<h1 className="counter__current-value">{ currentValue }</h1>
-					<div className="counter__button-wrapper">
-						<button
-							className="counter__button"
-							onClick={ () => increment( 1 ) }
-						>
-							+1
-						</button>
-						<button
-							className="counter__button"
-							onClick={ () => increment( 5 ) }
-						>
-							+5
-						</button>
-						<button
-							className="counter__button"
-							onClick={ () => decrement( 1 ) }
-						>
-							-1
-						</button>
-						<button
-							className="counter__button"
-							onClick={ () => decrement( 5 ) }
-						>
-							-5
-						</button>
-						<br />
-						<button
-							className="counter__button"
-							disabled={ previousValues.length === 0 }
-							onClick={ undo }
-						>
-							Undo
-						</button>
-						<button
-							className="counter__button"
-							disabled={ futureValues.length === 0 }
-							onClick={ redo }
-						>
-							Redo
-						</button>
-					</div>
-				</section>
-				<section className="state">
-					<pre>
-						{ JSON.stringify( this.props, null, 2 ) }
-					</pre>
-				</section>
-			</div>
-		);
-	}
+  render() {
+    const { 
+      currentValue, decrement, futureValues,
+      increment, previousValues, redo, undo
+    } = this.props;
+    
+    return (
+      <div className="app">
+        <section className="counter">
+          <h1 className="counter__current-value">{ currentValue }</h1>
+          <div className="counter__button-wrapper">
+            <button
+              className="counter__button"
+              onClick={ () => increment( 1 ) }
+            >
+              +1
+            </button>
+            <button
+              className="counter__button"
+              onClick={ () => increment( 5 ) }
+            >
+              +5
+            </button>
+            <button
+              className="counter__button"
+              onClick={ () => decrement( 1 ) }
+            >
+              -1
+            </button>
+            <button
+              className="counter__button"
+              onClick={ () => decrement( 5 ) }
+            >
+              -5
+            </button>
+            <br />
+            <button
+              className="counter__button"
+              disabled={ previousValues.length === 0 }
+              onClick={ undo }
+            >
+              Undo
+            </button>
+            <button
+              className="counter__button"
+              disabled={ futureValues.length === 0 }
+              onClick={ redo }
+            >
+              Redo
+            </button>
+          </div>
+        </section>
+        <section className="state">
+          <pre>
+            { JSON.stringify( this.props, null, 2 ) }
+          </pre>
+        </section>
+      </div>
+    );
+  }
 }
 
 function mapStateToProps( state ) {
-	return state;
+  return state;
 }
 
 export default connect( mapStateToProps, { decrement, increment, redo, undo } )( App );
 ```
-
-</details>
 
 </details>
 
