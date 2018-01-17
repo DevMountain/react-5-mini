@@ -3,47 +3,51 @@ import { connect } from "react-redux";
 
 import "./App.css";
 
+import { decrement, increment } from "./ducks/counter";
+
 class App extends Component {
   render() {
+    const { currentValue, decrement, increment } = this.props;
+
     return (
       <div className="app">
         <section className="counter">
-          <h1 className="counter__current-value">{ 0 }</h1>
+          <h1 className="counter__current-value">{ currentValue }</h1>
           <div className="counter__button-wrapper">
             <button
-              className="counter__button increment-one"
-              onClick={ () => null }
+              className="counter__button"
+              onClick={ () => increment( 1 ) }
             >
               +1
             </button>
             <button
-              className="counter__button increment-five"
-              onClick={ () => null }
+              className="counter__button"
+              onClick={ () => increment( 5 ) }
             >
               +5
             </button>
             <button
-              className="counter__button decrement-one"
-              onClick={ () => null }
+              className="counter__button"
+              onClick={ () => decrement( 1 ) }
             >
               -1
             </button>
             <button
-              className="counter__button decrement-five"
-              onClick={ () => null }
+              className="counter__button"
+              onClick={ () => decrement( 5 ) }
             >
               -5
             </button>
             <br />
             <button
-              className="counter__button undo"
+              className="counter__button"
               disabled={ true }
               onClick={ () => null }
             >
               Undo
             </button>
             <button
-              className="counter__button redo"
+              className="counter__button"
               disabled={ true }
               onClick={ () => null }
             >
@@ -65,4 +69,4 @@ function mapStateToProps( state ) {
   return state;
 }
 
-export default connect( mapStateToProps )( App );
+export default connect( mapStateToProps, { decrement, increment } )( App );

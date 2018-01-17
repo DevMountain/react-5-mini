@@ -179,40 +179,24 @@ export function decrement( amount ) {
 
 </details>
 
-### Step 4
+## Step 4
 
-**Summary**
+### Summary
 
-Now that we can effectively manage application state, we need to wire up the `App` component so that it can dispatch actions to our reducer.
+In this step, we'll wire up the `App` component so that it can dispatch actions to our reducer.
 
-**Instructions**
+### Instructions
 
-* Import the `increment` and `decrement` action creators to `src/App.js`.
+* Open `./src/App.js`.
+* Import the `increment` and `decrement` action creators.
 * Use `connect`'s `mapDispatchToProps` to place the action creators on `App`'s props.
-* Attach the action creators to the appropriate buttons.
-
-**Detailed Instructions**
-
-Inside of `src/App.js`, import the `increment` and `decrement` action creators. To use these within our component, we need to do two things:
-
-1. Place them onto the component's props
-2. Wrap them in React-Redux's `dispatch` function - `dispatch` is the function used within Redux to indicate that something has happened and state needs to change.
-
-Luckily `connect` allows us to do just that! Pass a second argument to `connect`, this argument should be an object comprised of our action creators. Connect will automatically wrap each method in `dispatch` and then place it on our component's props.
-
-Now that we have access to all of the necessary and data and functions inside of `App`, we can connect to the UI and provide interactivity. Begin by destructuring `currentValue`, `decrement`, and `increment` from `this.props` at the top of `App`'s `render` method. Replace the static `0` inside of the `h1` with `currentValue`. In the button with the text "+1", change the callback function to invoke `increment` with an argument of `1`. Repeat this step for the "+5" button. Follow the same steps for the "-1" and "-5" buttons with the `decrement` function.
-
-You should now be able to interact with all of the increment and decrement buttons and see their result update in the view.
+* Update the `.counter_button` buttons to call `increment` or `decrement` with the correct `amount`.
 
 <details>
 
-<summary><b>Code Solution</b></summary>
+<summary> <code> ./src/App.js </code> </summary>
 
-<details>
-
-<summary><code>src/App.js</code></summary>
-
-```jsx
+```js
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
@@ -221,80 +205,75 @@ import "./App.css";
 import { decrement, increment } from "./ducks/counter";
 
 class App extends Component {
-	render() {
-		const {
-			  currentValue
-			, decrement
-			, increment
-		} = this.props;
+  render() {
+    const { currentValue, decrement, increment } = this.props;
 
-		return (
-			<div className="app">
-				<section className="counter">
-					<h1 className="counter__current-value">{ currentValue }</h1>
-					<div className="counter__button-wrapper">
-						<button
-							className="counter__button"
-							onClick={ () => increment( 1 ) }
-						>
-							+1
-						</button>
-						<button
-							className="counter__button"
-							onClick={ () => increment( 5 ) }
-						>
-							+5
-						</button>
-						<button
-							className="counter__button"
-							onClick={ () => decrement( 1 ) }
-						>
-							-1
-						</button>
-						<button
-							className="counter__button"
-							onClick={ () => decrement( 5 ) }
-						>
-							-5
-						</button>
-						<br />
-						<button
-							className="counter__button"
-							disabled={ true }
-							onClick={ () => null }
-						>
-							Undo
-						</button>
-						<button
-							className="counter__button"
-							disabled={ true }
-							onClick={ () => null }
-						>
-							Redo
-						</button>
-					</div>
-				</section>
-				<section className="state">
-					<pre>
-						{ JSON.stringify( this.props, null, 2 ) }
-					</pre>
-				</section>
-			</div>
-		);
-	}
+    return (
+      <div className="app">
+        <section className="counter">
+          <h1 className="counter__current-value">{ currentValue }</h1>
+          <div className="counter__button-wrapper">
+            <button
+              className="counter__button"
+              onClick={ () => increment( 1 ) }
+            >
+              +1
+            </button>
+            <button
+              className="counter__button"
+              onClick={ () => increment( 5 ) }
+            >
+              +5
+            </button>
+            <button
+              className="counter__button"
+              onClick={ () => decrement( 1 ) }
+            >
+              -1
+            </button>
+            <button
+              className="counter__button"
+              onClick={ () => decrement( 5 ) }
+            >
+              -5
+            </button>
+            <br />
+            <button
+              className="counter__button"
+              disabled={ true }
+              onClick={ () => null }
+            >
+              Undo
+            </button>
+            <button
+              className="counter__button"
+              disabled={ true }
+              onClick={ () => null }
+            >
+              Redo
+            </button>
+          </div>
+        </section>
+        <section className="state">
+          <pre>
+            { JSON.stringify( this.props, null, 2 ) }
+          </pre>
+        </section>
+      </div>
+    );
+  }
 }
 
 function mapStateToProps( state ) {
-	return state;
+  return state;
 }
 
 export default connect( mapStateToProps, { decrement, increment } )( App );
-
 ```
 
 </details>
 
-</details>
+
 
 ### Step 5 - **Black Diamond**
 
