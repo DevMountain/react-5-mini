@@ -6,9 +6,9 @@ In this project, we'll create a small counter application using React and Redux.
 
 # Live Example
 
-<a href="#">Click Me!</a>
+<a href="https://devmountain.github.io/react-5-mini/">Click Me!</a>
 
-<img src="https://raw.githubusercontent.com/DevMountain/redux-counter/master/SolutionPicture.png" />
+<img src="https://github.com/DevMountain/react-5-mini/blob/solution/readme-assets/5.png" />
 
 ## Setup
 
