@@ -132,7 +132,7 @@ export default connect( mapStateToProps )( App );
 
 <img src="https://github.com/DevMountain/react-5-mini/blob/solution/readme-assets/2.png" />
 
-### Step 3
+## Step 3
 
 ### Summary
 
