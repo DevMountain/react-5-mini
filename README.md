@@ -81,8 +81,6 @@ In this step, we'll make our application aware that redux exists and connect the
 
 <details>
 
-<details>
-
 <summary> <code> ./src/index.js </code> </summary>
 
 ```js
