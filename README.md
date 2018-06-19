@@ -331,12 +331,12 @@ export default function counter(state = initialState, action) {
       return {
         currentValue: state.previousValues[0],
         futureValues: [state.currentValue, ...state.futureValues],
-        previousValues: state.previousValues.slice(1, state.previousValues.length)
+        previousValues: state.previousValues.slice(1)
       };
     case REDO:
       return {
-        currentValue: state.futureValues[ 0 ],
-        futureValues: state.futureValues.slice(1, state.futureValues.length),
+        currentValue: state.futureValues[0],
+        futureValues: state.futureValues.slice(1),
         previousValues: [state.currentValue, ...state.previousValues]
       };
     default:
@@ -374,7 +374,7 @@ In this step, we'll import `undo` and `redo` action creators into our `Counter.j
 * Open `./src/Counter.js`.
 * Import `undo` and `redo` action creators.
 * Add `undo` and `redo` to `mapDispatchToProps`.
-* Destrcuture `undo` and `redo` from `props`.
+* Destrucuture `undo` and `redo` from `props`.
 * Hook up the `undo` and `redo` buttons to their respective action creators.
 
 ### Solution
