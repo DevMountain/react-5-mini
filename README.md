@@ -12,7 +12,7 @@ In this project, we'll create a small counter application using React and Redux.
 
 ## Setup
 
-* `fork` and `clone` this repository. 
+* `fork` and `clone` this repository.
 * `cd` into the project root.
 * Run `npm install` to fetch the project dependencies.
 * Run `npm start` to spin up a development server.
@@ -57,7 +57,7 @@ import { createStore } from "redux";
 
 import counter from "./ducks/counter";
 
-export default createStore( counter );
+export default createStore(counter);
 ```
 
 </details>
@@ -70,14 +70,14 @@ In this step, we'll make our application aware that redux exists and connect the
 
 ### Instructions
 
-* Open `src/index.js`.
+* Open `src/App.js`.
 * Import `Provider` from `react-redux`.
 * Import `store` from `./src/store.js`.
 * Wrap the `App` component in the `Provider` component.
   * Add a `store` prop that equals our imported `store`.
-* Open `./src/App.js`.
+* Open `./src/Counter.js`.
 * Import `connect` from `react-redux`.
-* Connect the `App` component to Redux.
+* Connect the `Counter` component to Redux.
   * Use a `mapStateToProps` function that takes in state.
     * Return `state` for now.
 
@@ -85,31 +85,35 @@ In this step, we'll make our application aware that redux exists and connect the
 
 <details>
 
-<summary> <code> ./src/index.js </code> </summary>
+<summary> <code> ./src/App.js </code> </summary>
 
 ```js
-import React from "react";
-import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
+import React, { Component } from 'react';
+import { Provider } from 'react-redux;
 
-import "./index.css";
+import store from './store';
+import './App.css';
 
-import store from "./store";
-import App from "./App";
+import Counter from './Counter';
 
-ReactDOM.render(
-  <Provider store={ store }>
-    <App />
-  </Provider>
-  , document.getElementById( 'root' )
-);
+class App extends Component {
+  render() {
+    return (
+      <Provider store={store}>
+        <Counter />
+      </Provider>
+    );
+  }
+}
+
+export default App;
 ```
 
 </details>
 
 <details>
 
-<summary> <code> ./src/App.js </code> </summary>
+<summary> <code> ./src/Counter.js </code> </summary>
 
 ```js
 import React, { Component } from "react";
@@ -117,7 +121,7 @@ import { connect } from "react-redux";
 
 import "./App.css";
 
-class App extends Component {
+class Counter extends Component {
   render() {
     return (
       /* lots of jsx */
@@ -125,11 +129,9 @@ class App extends Component {
   }
 }
 
-function mapStateToProps( state ) {
-  return state;
-}
+const mapStateToProps = state => state;
 
-export default connect( mapStateToProps )( App );
+export default connect(mapStateToProps)(Counter);
 ```
 
 </details>
@@ -164,8 +166,8 @@ const initialState = { currentValue: 0 };
 const INCREMENT = "INCREMENT";
 const DECREMENT = "DECREMENT";
 
-export default function counter( state = initialState, action ) {
-  switch ( action.type ) {
+export default function counter(state = initialState, action) {
+  switch (action.type) {
     case INCREMENT:
       return { currentValue: state.currentValue + action.amount };
     case DECREMENT:
@@ -175,11 +177,11 @@ export default function counter( state = initialState, action ) {
   }
 }
 
-export function increment( amount ) {
+export function increment(amount) {
   return { amount, type: INCREMENT };
 }
 
-export function decrement( amount ) {
+export function decrement(amount) {
   return { amount, type: DECREMENT };
 }
 ```
@@ -190,74 +192,72 @@ export function decrement( amount ) {
 
 ### Summary
 
-In this step, we'll wire up the `App` component so that it can dispatch actions to our reducer.
+In this step, we'll wire up the `Counter` component so that it can dispatch actions to our reducer.
 
 ### Instructions
 
-* Open `./src/App.js`.
+* Open `./src/Counter.js`.
 * Import the `increment` and `decrement` action creators.
-* Use `connect`'s `mapDispatchToProps` to place the action creators on `App`'s props.
+* Use `connect`'s `mapDispatchToProps` to place the action creators on `Counter`'s props.
 * Update the `.counter_button` buttons to call `increment` or `decrement` with the correct `amount`.
 
 ### Solution
 
 <details>
 
-<summary> <code> ./src/App.js </code> </summary>
+<summary> <code> ./src/Counter.js </code> </summary>
 
 ```js
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import "./App.css";
-
 import { decrement, increment } from "./ducks/counter";
 
-class App extends Component {
+class Counter extends Component {
   render() {
     const { currentValue, decrement, increment } = this.props;
 
     return (
       <div className="app">
         <section className="counter">
-          <h1 className="counter__current-value">{ currentValue }</h1>
+          <h1 className="counter__current-value">{currentValue}</h1>
           <div className="counter__button-wrapper">
             <button
               className="counter__button"
-              onClick={ () => increment( 1 ) }
+              onClick={() => increment(1)}
             >
               +1
             </button>
             <button
               className="counter__button"
-              onClick={ () => increment( 5 ) }
+              onClick={() => increment(5)}
             >
               +5
             </button>
             <button
               className="counter__button"
-              onClick={ () => decrement( 1 ) }
+              onClick={() => decrement(1)}
             >
               -1
             </button>
             <button
               className="counter__button"
-              onClick={ () => decrement( 5 ) }
+              onClick={() => decrement(5)}
             >
               -5
             </button>
             <br />
             <button
               className="counter__button"
-              disabled={ true }
-              onClick={ () => null }
+              disabled={true}
+              onClick={() => null}
             >
               Undo
             </button>
             <button
               className="counter__button"
-              disabled={ true }
-              onClick={ () => null }
+              disabled={true}
+              onClick={() => null}
             >
               Redo
             </button>
@@ -265,7 +265,7 @@ class App extends Component {
         </section>
         <section className="state">
           <pre>
-            { JSON.stringify( this.props, null, 2 ) }
+            {JSON.stringify(this.props, null, 2)}
           </pre>
         </section>
       </div>
@@ -273,11 +273,9 @@ class App extends Component {
   }
 }
 
-function mapStateToProps( state ) {
-  return state;
-}
+const mapStateToProps = state => state;
 
-export default connect( mapStateToProps, { decrement, increment } )( App );
+export default connect(mapStateToProps, { decrement, increment })(Counter);
 ```
 
 </details>
@@ -317,31 +315,31 @@ const DECREMENT = "DECREMENT";
 const UNDO = "UNDO";
 const REDO = "REDO";
 
-export default function counter( state = initialState, action ) {
-  switch ( action.type ) {
+export default function counter(state = initialState, action) {
+  switch (action.type) {
     case INCREMENT:
       return {
-        currentValue: state.currentValue + action.amount, 
+        currentValue: state.currentValue + action.amount,
         futureValues: [],
-        previousValues: [ state.currentValue, ...state.previousValues ]
+        previousValues: [state.currentValue, ...state.previousValues]
       };
     case DECREMENT:
       return {
         currentValue: state.currentValue - action.amount,
         futureValues: [],
-        previousValues: [ state.currentValue, ...state.previousValues ]
+        previousValues: [state.currentValue, ...state.previousValues]
       };
     case UNDO:
       return {
-        currentValue: state.previousValues[ 0 ],
-        futureValues: [ state.currentValue, ...state.futureValues ],
-        previousValues: state.previousValues.slice( 1, state.previousValues.length )
+        currentValue: state.previousValues[0],
+        futureValues: [state.currentValue, ...state.futureValues],
+        previousValues: state.previousValues.slice(1, state.previousValues.length)
       };
     case REDO:
       return {
         currentValue: state.futureValues[ 0 ],
-        futureValues: state.futureValues.slice( 1, state.futureValues.length ),
-        previousValues: [ state.currentValue, ...state.previousValues ]
+        futureValues: state.futureValues.slice(1, state.futureValues.length),
+        previousValues: [state.currentValue, ...state.previousValues]
       };
     default:
       return state;
@@ -369,13 +367,13 @@ export function redo() {
 
 ## Step 6
 
-### Summary 
+### Summary
 
-In this step, we'll import `undo` and `redo` action creators into our `App.js` and hook them up their respective buttons.
+In this step, we'll import `undo` and `redo` action creators into our `Counter.js` and hook them up their respective buttons.
 
 ### Instructions
 
-* Open `./src/App.js`.
+* Open `./src/Counter.js`.
 * Import `undo` and `redo` action creators.
 * Add `undo` and `redo` to `mapDispatchToProps`.
 * Destrcuture `undo` and `redo` from `props`.
@@ -385,7 +383,7 @@ In this step, we'll import `undo` and `redo` action creators into our `App.js` a
 
 <details>
 
-<summary> <code> ./src/App.js </code> </summary>
+<summary> <code> ./src/Counter.js </code> </summary>
 
 ```js
 import React, { Component } from "react";
@@ -393,56 +391,58 @@ import { connect } from "react-redux";
 
 import { decrement, increment, redo, undo } from "./ducks/counter";
 
-import "./App.css";
-
-class App extends Component {
+class Counter extends Component {
   render() {
-    const { 
-      currentValue, decrement, futureValues,
-      increment, previousValues, redo, undo
+    const {
+      currentValue,
+      decrement,
+      futureValues,
+      increment,
+      previousValues,
+      redo,
+      undo
     } = this.props;
-    
     return (
       <div className="app">
         <section className="counter">
-          <h1 className="counter__current-value">{ currentValue }</h1>
+          <h1 className="counter__current-value">{currentValue}</h1>
           <div className="counter__button-wrapper">
             <button
               className="counter__button"
-              onClick={ () => increment( 1 ) }
+              onClick={() => increment(1)}
             >
               +1
             </button>
             <button
               className="counter__button"
-              onClick={ () => increment( 5 ) }
+              onClick={() => increment(5)}
             >
               +5
             </button>
             <button
               className="counter__button"
-              onClick={ () => decrement( 1 ) }
+              onClick={() => decrement(1)}
             >
               -1
             </button>
             <button
               className="counter__button"
-              onClick={ () => decrement( 5 ) }
+              onClick={() => decrement(5)}
             >
               -5
             </button>
             <br />
             <button
               className="counter__button"
-              disabled={ previousValues.length === 0 }
-              onClick={ undo }
+              disabled={previousValues.length === 0}
+              onClick={undo}
             >
               Undo
             </button>
             <button
               className="counter__button"
-              disabled={ futureValues.length === 0 }
-              onClick={ redo }
+              disabled={futureValues.length === 0}
+              onClick={redo}
             >
               Redo
             </button>
@@ -450,7 +450,7 @@ class App extends Component {
         </section>
         <section className="state">
           <pre>
-            { JSON.stringify( this.props, null, 2 ) }
+            {JSON.stringify(this.props, null, 2)}
           </pre>
         </section>
       </div>
@@ -458,11 +458,9 @@ class App extends Component {
   }
 }
 
-function mapStateToProps( state ) {
-  return state;
-}
+const mapStateToProps = state => state;
 
-export default connect( mapStateToProps, { decrement, increment, redo, undo } )( App );
+export default connect(mapStateToProps, { decrement, increment, redo, undo })(Counter);
 ```
 
 </details>
