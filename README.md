@@ -66,7 +66,7 @@ export default createStore(counter);
 
 ### Summary
 
-In this step, we'll make our application aware that redux exists and connect the `App` component.
+In this step, we'll make our application aware that redux exists and connect the `Counter` component.
 
 ### Instructions
 
@@ -118,8 +118,6 @@ export default App;
 ```js
 import React, { Component } from "react";
 import { connect } from "react-redux";
-
-import "./App.css";
 
 class Counter extends Component {
   render() {
