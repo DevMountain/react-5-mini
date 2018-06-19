@@ -88,13 +88,13 @@ In this step, we'll make our application aware that redux exists and connect the
 <summary> <code> ./src/App.js </code> </summary>
 
 ```js
-import React, { Component } from 'react';
-import { Provider } from 'react-redux;
+import React, { Component } from "react";
+import { Provider } from "react-redux";
 
-import store from './store';
-import './App.css';
+import store from "./store";
+import "./App.css";
 
-import Counter from './Counter';
+import Counter from "./Counter";
 
 class App extends Component {
   render() {
