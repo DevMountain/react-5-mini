@@ -4,47 +4,47 @@ const initialState = {
   previousValues: []
 };
 
-const INCREMENT = "INCREMENT";
-const DECREMENT = "DECREMENT";
-const UNDO = "UNDO";
-const REDO = "REDO";
+const INCREMENT = 'INCREMENT';
+const DECREMENT = 'DECREMENT';
+const UNDO = 'UNDO';
+const REDO = 'REDO';
 
-export default function counter( state = initialState, action ) {
-  switch ( action.type ) {
+export default function counter(state = initialState, action) {
+  switch (action.type) {
     case INCREMENT:
       return {
-        currentValue: state.currentValue + action.amount, 
+        currentValue: state.currentValue + action.amount,
         futureValues: [],
-        previousValues: [ state.currentValue, ...state.previousValues ]
+        previousValues: [state.currentValue, ...state.previousValues]
       };
     case DECREMENT:
       return {
         currentValue: state.currentValue - action.amount,
         futureValues: [],
-        previousValues: [ state.currentValue, ...state.previousValues ]
+        previousValues: [state.currentValue, ...state.previousValues]
       };
     case UNDO:
       return {
-        currentValue: state.previousValues[ 0 ],
-        futureValues: [ state.currentValue, ...state.futureValues ],
-        previousValues: state.previousValues.slice( 1, state.previousValues.length )
+        currentValue: state.previousValues[0],
+        futureValues: [state.currentValue, ...state.futureValues],
+        previousValues: state.previousValues.slice(1)
       };
     case REDO:
       return {
-        currentValue: state.futureValues[ 0 ],
-        futureValues: state.futureValues.slice( 1, state.futureValues.length ),
-        previousValues: [ state.currentValue, ...state.previousValues ]
+        currentValue: state.futureValues[0],
+        futureValues: state.futureValues.slice(1),
+        previousValues: [state.currentValue, ...state.previousValues]
       };
     default:
       return state;
   }
 }
 
-export function increment( amount ) {
+export function increment(amount) {
   return { amount, type: INCREMENT };
 }
 
-export function decrement( amount ) {
+export function decrement(amount) {
   return { amount, type: DECREMENT };
 }
 
