@@ -27,26 +27,12 @@ In this step, we'll install some new dependencies, create a reducer, and create 
 
 ### Instructions
 
-* Install `redux` and `react-redux`
-* Create an initial state `src/ducks/counter.js`
-* Write a simple reducer in `src/ducks/counter.js`
+* Install `redux`
+* Create an initial state `src/store.js`
+* Write a simple reducer in `src/store.js`
 * Create a Redux store in `src/store.js`
 
 ### Solution
-
-<details>
-
-<summary> <code> ./src/ducks/counter.js </code> </summary>
-
-```js
-const initialState = { currentValue: 0 };
-
-export default function counter( state = initialState, action ) {
-	return state;
-}
-```
-
-</details>
 
 <details>
 
@@ -55,7 +41,11 @@ export default function counter( state = initialState, action ) {
 ```js
 import { createStore } from "redux";
 
-import counter from "./ducks/counter";
+const initialState = { currentValue: 0 };
+
+function counter( state = initialState, action ) {
+	return state;
+}
 
 export default createStore(counter);
 ```
@@ -66,70 +56,46 @@ export default createStore(counter);
 
 ### Summary
 
-In this step, we'll make our application aware that redux exists and connect the `Counter` component.
+In this step, we'll give our `Counter` component access to the store.
 
 ### Instructions
 
-* Open `src/App.js`.
-* Import `Provider` from `react-redux`.
-* Import `store` from `./src/store.js`.
-* Wrap the `App` component in the `Provider` component.
-  * Add a `store` prop that equals our imported `store`.
+
 * Open `./src/Counter.js`.
-* Import `connect` from `react-redux`.
-* Connect the `Counter` component to Redux.
-  * Use a `mapStateToProps` function that takes in state.
-    * Return `state` for now.
+* Import `store` from `./src/store.js`.
+* Setup state for `Counter`.
+  * State should have a prop called `store`.
+    * Use the `getState` method to copy the Redux state to the `store` prop.
 
 ### Solution
-
-<details>
-
-<summary> <code> ./src/App.js </code> </summary>
-
-```js
-import React, { Component } from "react";
-import { Provider } from "react-redux";
-
-import store from "./store";
-import "./App.css";
-
-import Counter from "./Counter";
-
-class App extends Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <Counter />
-      </Provider>
-    );
-  }
-}
-
-export default App;
-```
-
-</details>
-
 <details>
 
 <summary> <code> ./src/Counter.js </code> </summary>
 
 ```js
 import React, { Component } from "react";
-import { connect } from "react-redux";
+import store from "./src/store";
 
 class Counter extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      store: store.getState();
+    }
+  }
   render() {
+    const {
+      currentValue,
+      futureValues,
+      previousValues
+    } = this.state.store;
     return (
       /* lots of jsx */
     );
   }
 }
 
-const mapStateToProps = state => state;
-
-export default connect(mapStateToProps)(Counter);
+export default Counter;
 ```
 
 </details>
@@ -140,14 +106,12 @@ export default connect(mapStateToProps)(Counter);
 
 ### Summary
 
-In this step, we'll set up Redux to actually execute actions. We'll start by creating action types, creating action creators, and implementing increment/decrement logic.
+In this step, we'll set up Redux to actually execute actions. We'll start by creating action type and implementing increment/decrement logic
 
 ### Instructions
 
-* Open `./src/ducks/counter.js`.
-* Create `INCREMENT` and `DECREMENT` action types.
-* Write action creators corresponding to `INCREMENT` and `DECREMENT` action types.
-  * Each of these action creators should accept an `amount` argument.
+* Open `./src/store.js`.
+* Create and export`INCREMENT` and `DECREMENT` action types.
 * Update the reducer to process these actions into state changes.
   * `INCREMENT` should increment `currentValue` by the given `amount`.
   * `DECREMENT` should decrement `currentValue` by the given `amount`.
@@ -156,15 +120,17 @@ In this step, we'll set up Redux to actually execute actions. We'll start by cre
 
 <details>
 
-<summary> <code> ./src/ducks/counter.js </code> </summary>
+<summary> <code> ./src/store.js </code> </summary>
 
 ```js
+import { createStore } from 'redux';
+
 const initialState = { currentValue: 0 };
 
-const INCREMENT = "INCREMENT";
-const DECREMENT = "DECREMENT";
+export const INCREMENT = "INCREMENT";
+export const DECREMENT = "DECREMENT";
 
-export default function counter(state = initialState, action) {
+function counter(state = initialState, action) {
   switch (action.type) {
     case INCREMENT:
       return { currentValue: state.currentValue + action.amount };
@@ -175,13 +141,7 @@ export default function counter(state = initialState, action) {
   }
 }
 
-export function increment(amount) {
-  return { amount, type: INCREMENT };
-}
-
-export function decrement(amount) {
-  return { amount, type: DECREMENT };
-}
+export default createStore(counter);
 ```
 
 </details>
@@ -195,9 +155,14 @@ In this step, we'll wire up the `Counter` component so that it can dispatch acti
 ### Instructions
 
 * Open `./src/Counter.js`.
-* Import the `increment` and `decrement` action creators.
-* Use `connect`'s `mapDispatchToProps` to place the action creators on `Counter`'s props.
+* Import the `INCREMENT` and `DECREMENT` action types.
+* Create an `increment` and a `decrement` method.
+  * The methods should accept an amount parameter.
+  * The component method should use the Redux `dispatch` method to send an action to the reducer.
+    * The action should include the action type you imported.
+    * The action should include the amount. 
 * Update the `.counter_button` buttons to call `increment` or `decrement` with the correct `amount`.
+* In `componentDidMount`, use the Redux `subscribe` method to update local state.
 
 ### Solution
 
@@ -207,41 +172,51 @@ In this step, we'll wire up the `Counter` component so that it can dispatch acti
 
 ```js
 import React, { Component } from "react";
-import { connect } from "react-redux";
-
-import { decrement, increment } from "./ducks/counter";
+import { INCREMENT, DECREMENT } from "./store.js";
 
 class Counter extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      store: store.getState()
+    };
+    this.increment = this.increment.bind(this);
+    this.decrement = this.decrement.bind(this);
+  }
+  componentDidMount() {
+    store.subscribe(() => {
+      this.setState({
+        store: store.getState()
+      });
+    });
+  }
+  increment(amount) {
+    store.dispatch({ amount, type: INCREMENT });
+  }
+  decrement(amount) {
+    store.dispatch({ amount, type: DECREMENT });
+  }
   render() {
-    const { currentValue, decrement, increment } = this.props;
-
+    const {
+      currentValue,
+      futureValues,
+      previousValues
+    } = this.state.store;
     return (
       <div className="app">
         <section className="counter">
           <h1 className="counter__current-value">{currentValue}</h1>
           <div className="counter__button-wrapper">
-            <button
-              className="counter__button"
-              onClick={() => increment(1)}
-            >
+            <button className="counter__button" onClick={() => this.increment(1)}>
               +1
             </button>
-            <button
-              className="counter__button"
-              onClick={() => increment(5)}
-            >
+            <button className="counter__button" onClick={() => this.increment(5)}>
               +5
             </button>
-            <button
-              className="counter__button"
-              onClick={() => decrement(1)}
-            >
+            <button className="counter__button" onClick={() => this.decrement(1)}>
               -1
             </button>
-            <button
-              className="counter__button"
-              onClick={() => decrement(5)}
-            >
+            <button className="counter__button" onClick={() => this.decrement(5)}>
               -5
             </button>
             <br />
@@ -271,9 +246,7 @@ class Counter extends Component {
   }
 }
 
-const mapStateToProps = state => state;
-
-export default connect(mapStateToProps, { decrement, increment })(Counter);
+export default Counter;
 ```
 
 </details>
@@ -290,30 +263,31 @@ In this step, we'll implement undo/redo logic into our reducer.
 
 ### Instructions
 
-* Open `./src/ducks/counter.js`.
-* Create `UNDO` and `REDO` action types.
-* Write action creators for `UNDO` and `REDO`.
+* Open `./src/store.js`.
+* Create and export `UNDO` and `REDO` action types.
 * Refactor `initialState` and `counter` to handle undo/redo logic.
 
 ### Solution
 
 <details>
 
-<summary> <code> ./src/ducks/counter.js </code> </summary>
+<summary> <code> ./src/store.js </code> </summary>
 
 ```js
+import { createStore } from 'redux';
+
 const initialState = {
   currentValue: 0,
   futureValues: [],
   previousValues: []
 };
 
-const INCREMENT = "INCREMENT";
-const DECREMENT = "DECREMENT";
-const UNDO = "UNDO";
-const REDO = "REDO";
+export const INCREMENT = 'INCREMENT';
+export const DECREMENT = 'DECREMENT';
+export const UNDO = 'UNDO';
+export const REDO = 'REDO';
 
-export default function counter(state = initialState, action) {
+function counter(state = initialState, action) {
   switch (action.type) {
     case INCREMENT:
       return {
@@ -343,22 +317,7 @@ export default function counter(state = initialState, action) {
       return state;
   }
 }
-
-export function increment( amount ) {
-  return { amount, type: INCREMENT };
-}
-
-export function decrement( amount ) {
-  return { amount, type: DECREMENT };
-}
-
-export function undo() {
-  return { type: UNDO };
-}
-
-export function redo() {
-  return { type: REDO };
-}
+export default createStore(counter);
 ```
 
 </details>
@@ -367,15 +326,16 @@ export function redo() {
 
 ### Summary
 
-In this step, we'll import `undo` and `redo` action creators into our `Counter.js` and hook them up their respective buttons.
+In this step, we'll import `UNDO` and `REDO` action types into our `Counter.js` and write methods to dispatch them.
 
 ### Instructions
 
 * Open `./src/Counter.js`.
-* Import `undo` and `redo` action creators.
-* Add `undo` and `redo` to `mapDispatchToProps`.
-* Destrucuture `undo` and `redo` from `props`.
-* Hook up the `undo` and `redo` buttons to their respective action creators.
+* Import `UNDO` and `REDO` action types.
+* Create an `undo` and a `redo` method.
+  * The component method should use the Redux `dispatch` method to send an action to the reducer.
+    * The action should include the action type you imported.
+* Hook up the `undo` and `redo` buttons to their respective methods.
 
 ### Solution
 
@@ -385,80 +345,88 @@ In this step, we'll import `undo` and `redo` action creators into our `Counter.j
 
 ```js
 import React, { Component } from "react";
-import { connect } from "react-redux";
-
-import { decrement, increment, redo, undo } from "./ducks/counter";
+import store, { INCREMENT, DECREMENT, UNDO, REDO } from "./store.js";
 
 class Counter extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      store: store.getState()
+    };
+    this.increment = this.increment.bind(this);
+    this.decrement = this.decrement.bind(this);
+    this.undo = this.undo.bind(this);
+    this.redo = this.redo.bind(this);
+  }
+  componentDidMount() {
+    store.subscribe(() => {
+      this.setState({
+        store: store.getState()
+      });
+    });
+  }
+
+  increment(amount) {
+    store.dispatch({ amount, type: INCREMENT });
+  }
+  decrement(amount) {
+    store.dispatch({ amount, type: DECREMENT });
+  }
+  undo() {
+    store.dispatch({ type: UNDO });
+  }
+  redo() {
+    store.dispatch({ type: REDO });
+  }
   render() {
     const {
       currentValue,
-      decrement,
       futureValues,
-      increment,
-      previousValues,
-      redo,
-      undo
-    } = this.props;
+      previousValues
+    } = this.state.store;
+
     return (
       <div className="app">
         <section className="counter">
           <h1 className="counter__current-value">{currentValue}</h1>
           <div className="counter__button-wrapper">
-            <button
-              className="counter__button"
-              onClick={() => increment(1)}
-            >
+            <button className="counter__button" onClick={() => this.increment(1)}>
               +1
             </button>
-            <button
-              className="counter__button"
-              onClick={() => increment(5)}
-            >
+            <button className="counter__button" onClick={() => this.increment(5)}>
               +5
             </button>
-            <button
-              className="counter__button"
-              onClick={() => decrement(1)}
-            >
+            <button className="counter__button" onClick={() => this.decrement(1)}>
               -1
             </button>
-            <button
-              className="counter__button"
-              onClick={() => decrement(5)}
-            >
+            <button className="counter__button" onClick={() => this.decrement(5)}>
               -5
             </button>
             <br />
             <button
               className="counter__button"
               disabled={previousValues.length === 0}
-              onClick={undo}
+              onClick={this.undo}
             >
               Undo
             </button>
             <button
               className="counter__button"
               disabled={futureValues.length === 0}
-              onClick={redo}
+              onClick={this.redo}
             >
               Redo
             </button>
           </div>
         </section>
         <section className="state">
-          <pre>
-            {JSON.stringify(this.props, null, 2)}
-          </pre>
+          <pre>{JSON.stringify(this.state.store, null, 2)}</pre>
         </section>
       </div>
     );
   }
 }
-
-const mapStateToProps = state => state;
-
-export default connect(mapStateToProps, { decrement, increment, redo, undo })(Counter);
+export default Counter;
 ```
 
 </details>

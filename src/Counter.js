@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 
 class Counter extends Component {
+  constructor(props) {
+    super(props);
+  }
   render() {
     return (
       <div className="app">
@@ -49,7 +52,7 @@ class Counter extends Component {
           </div>
         </section>
         <section className="state">
-          <pre>{JSON.stringify(this.props, null, 2)}</pre>
+          <pre>{JSON.stringify(this.state, null, 2)}</pre>
         </section>
       </div>
     );
