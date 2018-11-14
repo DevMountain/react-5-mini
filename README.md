@@ -28,9 +28,11 @@ In this step, we'll install some new dependencies, create a reducer, and create 
 ### Instructions
 
 * Install `redux`
-* Create an initial state `src/store.js`
-* Write a simple reducer in `src/store.js`
-* Create a Redux store in `src/store.js`
+* Open `./src/store.js`
+* Import `createStore` from Redux.
+* Create an initial state with a current value prop for our counter.
+* Write a simple reducer.
+* Create and export a Redux store.
 
 ### Solution
 
@@ -66,6 +68,9 @@ In this step, we'll give our `Counter` component access to the store.
 * Setup state for `Counter`.
   * State should have a prop called `store`.
     * Use the `getState` method to copy the Redux state to the `store` prop.
+* Destructure `currentValue` from state in your `render` method.
+* Update the `h1` to use the `currentValue`.
+* Update the `JSON.stringify` method to display the `store` property on state.
 
 ### Solution
 <details>
@@ -85,12 +90,18 @@ class Counter extends Component {
   }
   render() {
     const {
-      currentValue,
-      futureValues,
-      previousValues
+      currentValue
     } = this.state.store;
     return (
-      /* lots of jsx */
+      <div className="app">
+        <section className="counter">
+          <h1 className="counter__current-value">{currentValue}</h1>
+          /* lots of jsx */
+        </section>
+        <section className="state">
+          <pre>{JSON.stringify(this.state.store, null, 2)}</pre>
+        </section>
+      </div>
     );
   }
 }
@@ -106,7 +117,7 @@ export default Counter;
 
 ### Summary
 
-In this step, we'll set up Redux to actually execute actions. We'll start by creating action type and implementing increment/decrement logic
+In this step, we'll set up Redux to actually execute actions. We'll start by creating action types and implementing increment/decrement logic
 
 ### Instructions
 
@@ -163,6 +174,7 @@ In this step, we'll wire up the `Counter` component so that it can dispatch acti
     * The action should include the amount. 
 * Update the `.counter_button` buttons to call `increment` or `decrement` with the correct `amount`.
 * In `componentDidMount`, use the Redux `subscribe` method to update local state.
+  * The `subscribe` method will use the `getState` method to update.
 
 ### Solution
 
@@ -172,7 +184,7 @@ In this step, we'll wire up the `Counter` component so that it can dispatch acti
 
 ```js
 import React, { Component } from "react";
-import { INCREMENT, DECREMENT } from "./store.js";
+import store, { INCREMENT, DECREMENT } from "./store.js";
 
 class Counter extends Component {
   constructor(props) {
@@ -198,9 +210,7 @@ class Counter extends Component {
   }
   render() {
     const {
-      currentValue,
-      futureValues,
-      previousValues
+      currentValue
     } = this.state.store;
     return (
       <div className="app">
@@ -336,6 +346,8 @@ In this step, we'll import `UNDO` and `REDO` action types into our `Counter.js` 
   * The component method should use the Redux `dispatch` method to send an action to the reducer.
     * The action should include the action type you imported.
 * Hook up the `undo` and `redo` buttons to their respective methods.
+* Destructure `previousValues` and `futureValues` from the store in the `render` method.
+* Update the `disabled` attributes of the buttons to use `previousValues` and `futureValues` respectively.
 
 ### Solution
 
