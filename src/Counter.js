@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import store, { INCREMENT, DECREMENT, UNDO, REDO } from "./store.js";
 
-export default class Counter extends Component {
+class Counter extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -33,27 +33,38 @@ export default class Counter extends Component {
     store.dispatch({ type: REDO });
   }
   render() {
-    const {
-      currentValue,
-      futureValues,
-      previousValues
+    const { 
+      currentValue, 
+      futureValues, 
+      previousValues 
     } = this.state.store;
-
     return (
       <div className="app">
         <section className="counter">
           <h1 className="counter__current-value">{currentValue}</h1>
           <div className="counter__button-wrapper">
-            <button className="counter__button" onClick={() => this.increment(1)}>
+            <button
+              className="counter__button"
+              onClick={() => this.increment(1)}
+            >
               +1
             </button>
-            <button className="counter__button" onClick={() => this.increment(5)}>
+            <button
+              className="counter__button"
+              onClick={() => this.increment(5)}
+            >
               +5
             </button>
-            <button className="counter__button" onClick={() => this.decrement(1)}>
+            <button
+              className="counter__button"
+              onClick={() => this.decrement(1)}
+            >
               -1
             </button>
-            <button className="counter__button" onClick={() => this.decrement(5)}>
+            <button
+              className="counter__button"
+              onClick={() => this.decrement(5)}
+            >
               -5
             </button>
             <br />
@@ -80,3 +91,5 @@ export default class Counter extends Component {
     );
   }
 }
+
+export default Counter;
