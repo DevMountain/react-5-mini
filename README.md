@@ -117,7 +117,7 @@ export default Counter;
 
 ### Summary
 
-In this step, we'll set up Redux to actually execute actions. We'll start by creating action types and implementing increment/decrement logic
+In this step, we'll set up Redux to actually execute actions. We'll start by creating action types and implementing increment/decrement logic.
 
 ### Instructions
 
@@ -248,7 +248,7 @@ class Counter extends Component {
         </section>
         <section className="state">
           <pre>
-            {JSON.stringify(this.props, null, 2)}
+            {JSON.stringify(this.state.store, null, 2)}
           </pre>
         </section>
       </div>
